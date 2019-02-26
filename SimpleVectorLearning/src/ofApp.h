@@ -24,4 +24,5 @@ class ofApp : public ofBaseApp{
     vector<string>  mStrings;
     
     vector<ofImage> mImages;
+    vector <URLImage> images;
 };
