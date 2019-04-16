@@ -10,10 +10,10 @@ void ofApp::setup(){
 	angle = 0;
     noiseArg = 0;
 
-    //bool
+    //boolean
 	oneShot = false;
 	pdfRendering = false;
-    
+    returnRate =true;
 	ofSetVerticalSync(true);
 	//load a custom font
 	//the ttf file must be inside your bin/data directory
@@ -26,22 +26,24 @@ void ofApp::setup(){
 //--------------------------------------------------------------
 void ofApp::update(){
 	angle++;
+    noiseArg += 0.05;
+    
+    if( (returnRate)&&ofGetFrameRate()<=12){
+        ofSetFrameRate(60);
+    }
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-    
-   
+
     //one pdf is true:
 	if( oneShot ){
 		ofBeginSaveScreenAsPDF("screenshot-"+ofGetTimestampString()+".pdf", false);
 	}
-    
     if( oneShot ){
         ofEndSaveScreenAsPDF();
         oneShot = false;
     }
-
     
     //mutiple pdf is true:
 	if( pdfRendering ){
@@ -52,7 +54,9 @@ void ofApp::draw(){
 		ofDrawBitmapString("press r to start pdf multipage rendering\npress s to save a single screenshot as pdf to disk", 32, 52);
 	}
     
-		
+	
+    
+    
     //draw lake shape
     
     ofPushMatrix();
@@ -61,11 +65,11 @@ void ofApp::draw(){
     ofSetColor(39);
     ofNoFill();
     ofSetLineWidth(2);
-    //auto: auto-type
     
+  
     float noiseValue = ofNoise(noiseArg);
-    noiseArg += 0.05;
-    auto radius_base = 250*ofMap(noiseValue,0, 1, 0.8, 1.5);//outer radius
+    //auto: auto-type
+    auto radius_base = 250*ofMap(noiseValue,0.01, 1.0, 0.8, 1.5);//outer radius
     auto len = 125;//distance=outerR-innerR
     auto deg_span = 5; //5 degrees each span
     //degrees
@@ -90,8 +94,7 @@ void ofApp::draw(){
         ofVertex(glm::vec2((radius - len) * cos((deg - deg_span * 0.5)  * DEG_TO_RAD), (radius - len) * sin((deg - deg_span * 0.5) * DEG_TO_RAD)));
         ofEndShape(true);
         
-        
-    }
+    }//for deg ends
 	ofPopMatrix();	
 	
 
@@ -107,9 +110,12 @@ void ofApp::keyPressed(int key){
 		if( pdfRendering ){
 			ofSetFrameRate(12);  // so it doesn't generate tons of pages
 			ofBeginSaveScreenAsPDF("recording-"+ofGetTimestampString()+".pdf", true);
+            returnRate=false;
+            
 		}else{
 			ofSetFrameRate(60);
-			ofEndSaveScreenAsPDF();		
+			ofEndSaveScreenAsPDF();
+            returnRate=true;
 		}
 	}
 	

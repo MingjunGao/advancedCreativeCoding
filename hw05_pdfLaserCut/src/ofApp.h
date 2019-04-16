@@ -27,10 +27,10 @@ class ofApp : public ofBaseApp{
 		vector <ofPoint> boxTrail;
 		ofTrueTypeFont font;
 		
-		bool						oneShot;
-		bool						pdfRendering;
-
-		float						angle;
-        float  noiseArg;
-        float a;
+		bool	oneShot;
+		bool    pdfRendering;
+    //using 2 noises
+		float	angle;
+        float   noiseArg;
+    bool returnRate;
 };
