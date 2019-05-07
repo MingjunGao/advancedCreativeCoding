@@ -19,6 +19,7 @@ void ofApp::setup(){
 	//the ttf file must be inside your bin/data directory
 	font.load("frabk.ttf", 24, true, false, true);
     
+    
 
     
 }
